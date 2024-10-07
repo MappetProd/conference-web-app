@@ -1,0 +1,50 @@
+﻿@using ConferenceWebApp.Models
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Селекторы</title>
+    <link rel="stylesheet" href="~/css/reset_default.css"/>
+    <link rel="stylesheet" href="~/css/styles.css"/>
+</head>
+<body>
+    <div class="container">
+        <h1>Предстоящие конференции</h1>
+        <form action="@Url.Action("FilterConferences")" method="post">
+            <input id="search" type="text" name="keyWord" placeholder="Введите ключевое слово">
+            <input type="date" name="beginDate">
+            <input type="date" name="endDate">
+            <button type="submit">Найти</button>
+        </form>
+        <div id="conference-list">
+
+            @foreach(Conference conference in ViewBag.Conferences)
+            {
+                string beginDate = DateTime.Parse(conference.begin_date).ToString("dd/MM/yyyy");
+                string endDate = DateTime.Parse(conference.begin_date).ToString("dd/MM/yyyy");
+                string beginTime = DateTime.Parse(conference.begin_date).ToString("HH:mm");
+                string endTime = DateTime.Parse(conference.end_date).ToString("HH:mm");
+
+                if (beginDate == endDate)
+                {
+                    <div class="conference">
+                        <div class="conference_shortcut">
+                            <p class="conference_header">@conference.name (@beginDate)</p>
+                            <button onclick="onConferenceClick(this)">инфо.</button>
+                        </div>
+                        <div class = "conf_addition_info" style="display:none">
+                            <p>Продолжительность конференции: @beginTime - @endTime</p>
+                            <a href="https://@conference.link" target="_blank">Ссылка на конференцию</a>
+                            <p>@conference.description</p>
+                        </div>
+                    </div>
+                }   
+            }
+
+        </div>
+    </div>
+
+    <script src="~/js/site.js"></script>
+</body>
+</html>
